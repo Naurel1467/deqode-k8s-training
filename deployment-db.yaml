@@ -1,0 +1,100 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: testapp
+  name: db 
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: db
+  template:
+    metadata:
+      labels:
+        app: db
+    spec:
+      containers:
+      - name: db
+        image: mongo
+        imagePullPolicy: IfNotPresent
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 27017
+        - containerPort: 27018
+        - containerPort: 27019
+        volumeMounts:
+            - mountPath: /docker-entrypoint-initdb.d/
+              name: dbinit
+              # subPath: init.js
+              readOnly: true
+        env:
+          - name: MONGO_INITDB_ROOT_USERNAME 
+            # value : root
+            valueFrom: 
+              secretKeyRef: 
+                name: db-secret 
+                key: MONGO_INITDB_ROOT_USERNAME
+          - name: MONGO_INITDB_ROOT_PASSWORD 
+            # value: example
+            valueFrom: 
+              secretKeyRef: 
+                name: db-secret 
+                key: MONGO_INITDB_ROOT_PASSWORD
+          - name: MONGO_INITDB_DATABASE 
+            valueFrom: 
+              secretKeyRef: 
+                name: db-secret 
+                key: MONGO_INITDB_DATABASE
+      volumes:
+        - name: dbinit
+          configMap: 
+            name: dbinit
+          # hostPath:
+            # path: db-init.js
+            # type: File
+          # persistentVolumeClaim:
+          #   claimName: database-claim0
+          #   readOnly: true
+      
+        
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: testapp
+  name: db-service
+spec:
+  selector:
+    app: db
+  ports:  
+  - port: 27017
+    targetPort: 27017
+    protocol: TCP
+  
+
+
+---
+apiVersion: v1
+data:
+  init.js: |+
+    db.createUser({
+      user: "user",
+      pwd: "secretPassword",
+      roles: [ { role: "dbOwner", db: "realestate" } ]
+    });
+
+    db.users.insert({
+      name: "user"
+    })
+
+kind: ConfigMap
+metadata:
+  namespace: testapp
+  # creationTimestamp: null
+  name: dbinit
+
+
+
