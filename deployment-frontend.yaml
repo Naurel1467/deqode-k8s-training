@@ -4,7 +4,7 @@ metadata:
   namespace: testapp
   name: frontend
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       app: frontend
@@ -28,11 +28,10 @@ spec:
         #     name: frontend-config
         env:
           - name: MONGODB_URI
-            value: mongodb://user:secretPassword@db-service/realestate
-            # valueFrom: 
-            #   secretKeyRef: 
-            #     name: db-secret 
-            #     key: MONGODB_URI
+            valueFrom: 
+              secretKeyRef: 
+                 name: db-secret 
+                 key: MONGODB_URI
    
 
 ---
@@ -44,11 +43,11 @@ metadata:
 spec:
   selector:
     app: frontend
-  type: NodePort
+  type: LoadBalancer
   ports:
-  - port: 8082
+  - port: 80 
     targetPort: 5000
-    nodePort: 32000
+      # nodePort: 32000
 
 ---
 apiVersion: v1
@@ -57,6 +56,6 @@ metadata:
   namespace: testapp
   name: frontend-config
 data:
-  MONGODB_URI: mongodb://user:secretPassword@database/realestate
+  MONGODB_URI: mongodb://user:secretPassword@db-service/realestate
 
 
