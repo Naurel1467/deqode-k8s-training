@@ -1,0 +1,27 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-app
+  labels:
+    name: ingress-app
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  rules:
+  - http:
+     paths:
+     - pathType: Prefix
+       path: "/app"
+       backend:
+         service:
+           name: frontend-svc
+           port: 
+             number: 80
+     - pathType: Prefix
+       path: "/db"
+       backend:
+          service:
+            name: mongoexpress-svc
+            port: 
+              number: 80
+            
