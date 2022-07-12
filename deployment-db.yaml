@@ -30,6 +30,8 @@ spec:
               name: dbinit
               # subPath: init.js
               readOnly: true
+            - mountPath: "/data/db"
+              name: mysql-vol
         env:
           - name: MONGO_INITDB_ROOT_USERNAME 
             # value : root
@@ -52,6 +54,9 @@ spec:
         - name: dbinit
           configMap: 
             name: dbinit
+        - name: mysql-vol
+          persistentVolumeClaim:
+                  claimName: mysql-pv-claim
           # hostPath:
             # path: db-init.js
             # type: File
