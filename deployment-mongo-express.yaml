@@ -50,11 +50,11 @@ metadata:
   namespace: testapp
   name: mongoexpress-svc
 spec:
-        # type: NodePort
+  # type: LoadBalancer
   selector:
     app: mongo-express
   ports:
-  - port: 8081
+  - port: 80
     targetPort: 8081
     #    nodePort: 30021
 

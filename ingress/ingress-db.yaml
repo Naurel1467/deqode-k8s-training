@@ -4,22 +4,22 @@ metadata:
   name: db-ingress
   namespace: testapp
   annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /$1
-    #alb.ingress.kubernetes.io/group.name: test-alb
+    #nginx.ingress.kubernetes.io/rewrite-target: /$1
+    alb.ingress.kubernetes.io/group.name: test-alb  #mandatory to bind all the ingress resources to single alb
     alb.ingress.kubernetes.io/backend-protocol: HTTP
     alb.ingress.kubernetes.io/listen-ports: '[{"HTTP":80}]'
     alb.ingress.kubernetes.io/target-type: ip
-    kubernetes.io/ingress.class: nginx
+    kubernetes.io/ingress.class: alb
+    alb.ingress.kubernetes.io/scheme: internet-facing
 spec:
   rules:
-  - host: "db.xyz.com"
-    http:
+    #- host: uat.deqodeingress.in
+  - http:
       paths:
-      - path: /
+      - path: /*
         pathType: Prefix
         backend:
           service:
             name: mongoexpress-svc
             port:
-              number: 8081
-
+              number: 80 

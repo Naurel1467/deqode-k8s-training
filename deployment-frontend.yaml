@@ -42,11 +42,11 @@ metadata:
   namespace: testapp
   name: frontend-svc
 spec:
-        #type: NodePort
+  #type: LoadBalancer 
   selector:
     app: frontend
   ports:
-  - port: 5000
+  - port: 80
     targetPort: 5000
     #nodePort: 30022
 

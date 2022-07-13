@@ -1,3 +1,7 @@
+#To deploy AWS load balancer use ---> https://docs.aws.amazon.com/eks/latest/userguide/aws-load-balancer-controller.html
+
+#Note The ALB Ingress Controller Is Now the AWS Load Balancer Controller
+
 # Weekend Challenge #5 - Real Estate Listings
 
 A Prime Digital Academy challenge for creating a full stack MEAN application that displays of list of real estate listings and giving a user the option to add, delete, or edit listings. 
