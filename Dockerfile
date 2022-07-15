@@ -3,7 +3,7 @@
 FROM node:8.10
 
 # Create an environment variable for MongoDB URI
-ENV MONGODB_URI='mongodb://localhost:27017/realestate'
+# ENV MONGODB_URI='mongodb://localhost:27017/realestate'
 
 # Set working directory for the project to /usr/src/app
 # NOTE: all the directives that follow in the Dockerfile will be executed

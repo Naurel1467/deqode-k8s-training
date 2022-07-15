@@ -29,27 +29,28 @@ var rentals = require('./routes/rentals.js');
 
 // mongoose.connect(databaseUrl, { useMongoClient: true });
 
-var databaseURI = '';
+var databaseURI = 'mongodb://user:secretPassword@db-service/realestate';
 // process.env.MONGODB_URI will only be defined if you are running on Heroku
-if (process.env.MONGODB_URI != undefined) {
-    // use the string value of the environment variable
-	databaseURI = process.env.MONGODB_URI;
-    console.log("mongodb uri", databaseURI)
-    // databaseURI = mongodb://user:secretPassword@db-service/realestate;
-} else {
-    // use the local database server
-    databaseURI = 'mongodb://localhost:27017/realestate';
-    console.log("localhost");
-}
+//if (process.env.MONGODB_URI != undefined) {
+//    // use the string value of the environment variable
+//	databaseURI = process.env.MONGODB_URI;
+//    console.log("mongodb uri", databaseURI)
+//    // databaseURI = mongodb://user:secretPassword@db-service/realestate;
+//} else {
+//    // use the local database server
+//    databaseURI = 'mongodb://localhost:27017/realestate';
+//    console.log("localhost");
+//}
 
 mongoose.connect(databaseURI);
+console.log("mongodb uri", databaseURI)
 
 // Optional, but nice to have
 mongoose.connection.on('connected', function () {
     console.log('mongoose connected to : ', databaseURI);
 });
 mongoose.connection.on('error', function (err) {
-    console.log('mongoose connection error to : ', err);
+    console.log('mongoose connection error to : ', databaseURI, err);
 });
 
 // Static

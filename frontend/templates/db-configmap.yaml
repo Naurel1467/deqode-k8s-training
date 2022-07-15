@@ -1,0 +1,17 @@
+apiVersion: v1
+data:
+  init.js: |+
+    db.createUser({
+      user: "user",
+      pwd: "secretPassword",
+      roles: [ { role: "dbOwner", db: "realestate" } ]
+    });
+
+    db.users.insert({
+      name: "user"
+    })
+
+kind: ConfigMap
+metadata:
+  # namespace: testapp
+  name: dbinit
